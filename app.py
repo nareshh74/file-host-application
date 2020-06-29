@@ -8,7 +8,7 @@ import os
 app = Flask(__name__)
 
 # configure flask app
-app.config.from_pyfile('config - dev.py', silent=True)
+app.config.from_pyfile('config-dev.py', silent=True)
 
 # create extension instances
 api = Api(app, doc = '/docs')
@@ -24,6 +24,7 @@ class File(Resource):
         if not current_user:
             return 'authentiation failed'
         if not os.path.isfile(path):
+            print(path)
             return "invalid file/path"
         return send_from_directory(app.root_path, path, as_attachment = True)
 
@@ -44,4 +45,4 @@ class Token(Resource):
         token = create_access_token(identity = request.authorization.username, expires_delta = False)
         return token
 
-app.run()
+app.run(port = 5001)

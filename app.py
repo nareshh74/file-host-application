@@ -1,7 +1,6 @@
-from flask import Flask, send_from_directory, request
+from flask import Flask, send_from_directory, request, redirect, make_response
 from flask_restplus import Api, Resource
 from flask_jwt_extended import (jwt_required, get_jwt_identity, create_access_token, JWTManager)
-import datetime
 from flask_sqlalchemy import SQLAlchemy
 import os
 
@@ -17,7 +16,7 @@ db = SQLAlchemy(app)
 jwt = JWTManager(app)
 
 # protected download API
-@api.route('/app/v1/resources/files/<path:path>')
+@api.route('/app/v1/resources/<path:path>')
 class File(Resource):
     @jwt_required
     def get(self, path):
@@ -33,7 +32,7 @@ class File(Resource):
 class Token(Resource):
     def get(self):
         if not request.authorization:
-            return 'basic authentication needed'
+            return make_response('couldnt authenticate', 401, {'WWW-Authenticate' : 'Basic realm="Login Required"'})
         if not request.authorization.username:
             return 'provide username'
         conn = db.engine.connect()
@@ -42,7 +41,7 @@ class Token(Resource):
             return "invalid user"
         if row[1] != request.authorization.password:
             return "wrong password"
-        token = create_access_token(identity = request.authorization.username, expires_delta = datetime.timedelta(minutes = 2))
+        token = create_access_token(identity = request.authorization.username, expires_delta = False)
         return token
 
 app.run()

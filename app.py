@@ -16,17 +16,21 @@ db = SQLAlchemy(app)
 jwt = JWTManager(app)
 
 # protected download API
-@api.route('/app/v1/resources/<path:path>')
+@api.route('/app/v1/resources/<string:file_name>')
 class File(Resource):
     @jwt_required
-    def get(self, path):
+    def get(self, file_name):
         current_user = get_jwt_identity
         if not current_user:
             return 'authentiation failed'
-        if not os.path.isfile(path):
-            print(path)
+        
+        file_name = 'host_files/01/' + file_name
+
+        if not os.path.isfile(file_name):
+            print(file_name)
             return "invalid file/path"
-        return send_from_directory(app.root_path, path, as_attachment = True)
+            
+        return send_from_directory(app.root_path, file_name, as_attachment = True)
 
 # generate token
 @api.route('/app/v1/resources/tokens')

@@ -2,7 +2,6 @@ from flask import Blueprint, send_from_directory, current_app as app
 from flask_restplus import Api, Resource
 from flask_jwt_extended import (jwt_required, get_jwt_identity)
 import os
-from . import jwt
 
 download_blueprint = Blueprint('files', __name__)
 download_api = Api(download_blueprint)

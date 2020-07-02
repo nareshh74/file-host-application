@@ -1,52 +1,24 @@
-from flask import Flask, send_from_directory, request, redirect, make_response
-from flask_restplus import Api, Resource
-from flask_jwt_extended import (jwt_required, get_jwt_identity, create_access_token, JWTManager)
-from flask_sqlalchemy import SQLAlchemy
-import os
+from flask import Flask
+from flask_restplus import Api
+from application import jwt, db
+from application import auth
+from application import download
+import config
 
-# create flask app
-app = Flask(__name__)
+api = Api(doc='/docs', version='1.0', title='Flask Application API Docs')
 
-# configure flask app
-app.config.from_pyfile('config-dev.py', silent=True)
+def create_app():
+    app = Flask(__name__)
+    app.config.from_object('config.Development_Config')
 
-# create extension instances
-api = Api(app, doc = '/docs')
-db = SQLAlchemy(app)
-jwt = JWTManager(app)
+    api.init_app(app)
+    db.init_app(app)
+    jwt.init_app(app)
 
-# protected download API
-@api.route('/app/v1/resources/<string:file_name>')
-class File(Resource):
-    @jwt_required
-    def get(self, file_name):
-        current_user = get_jwt_identity
-        if not current_user:
-            return 'authentiation failed'
-        
-        file_name = 'host_files/01/' + file_name
+    app.register_blueprint(auth.auth_blueprint)
+    app.register_blueprint(download.download_blueprint)
 
-        if not os.path.isfile(file_name):
-            print(file_name)
-            return "invalid file/path"
-            
-        return send_from_directory(app.root_path, file_name, as_attachment = True)
+    api.add_namespace(auth.auth_namespace)
+    api.add_namespace(download.download_namespace)
 
-# generate token
-@api.route('/app/v1/resources/tokens')
-class Token(Resource):
-    def get(self):
-        if not request.authorization:
-            return make_response('couldnt authenticate', 401, {'WWW-Authenticate' : 'Basic realm="Login Required"'})
-        if not request.authorization.username:
-            return 'provide username'
-        conn = db.engine.connect()
-        row = conn.execute("SELECT Name, Password FROM AppUser WHERE Name = '{u}'".format(u = "user1")).fetchone()
-        if not row:
-            return "invalid user"
-        if row[1] != request.authorization.password:
-            return "wrong password"
-        token = create_access_token(identity = request.authorization.username, expires_delta = False)
-        return token
-
-app.run(port = 5001)
+    return app

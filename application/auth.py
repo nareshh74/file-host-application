@@ -16,13 +16,12 @@ class Token(Resource):
             return make_response('couldnt authenticate', 401, {'WWW-Authenticate' : 'Basic realm="Login Required"'})
         conn = extensions.db.engine.connect()
         row = conn.execute("EXECUTE VerifyAppUser '{m}', '{p}'".format(m = request.authorization.username, p = request.authorization.password)).fetchone()
-        print(row['Column'])
         if row['Column'] == 0:
             return make_response("invalid user", 401)
         if row['Column'] == 1:
             return make_response("wrong password", 401)
         token = create_access_token(identity = row['Column'], expires_delta = False)
-        return make_response({'token' : token}, 200)
+        return {'token' : token}, 200
 
 @auth_namespace.route('/test')
 class Test(Resource):

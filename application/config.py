@@ -13,7 +13,7 @@ class Config(object):
             'level': 'DEBUG',
             'formatter': 'default',
             'class': 'logging.handlers.RotatingFileHandler',
-            'filename': 'C:\\Users\\nareshv\\Downloads\\Naresh\\01 - Programming\\projects\\file-host-application\\logs\\' + 'application - ' + str(date.today()) + '.log',
+            'filename': 'C:\\Users\\nareshv\\Downloads\\Naresh\\01 - Programming\\projects\\file_host_application\\logs\\' + 'application - ' + str(date.today()) + '.log',
             'maxBytes': 10000,
             'backupCount': 10
         }},
@@ -23,11 +23,11 @@ class Config(object):
         }
     }
 
-class Production_Config(Config):
+class Production(Config):
     SQLALCHEMY_DATABASE_URI = "mssql+pyodbc://application1:application1@PRINHYLTPDL1561/HumanResource?driver=SQL+Server"
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
-class Development_Config(Config):
+class Development(Config):
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = "mssql+pyodbc://application1:application1@PRINHYLTPDL1561/HumanResource?driver=SQL+Server"
     SQLALCHEMY_TRACK_MODIFICATIONS = False

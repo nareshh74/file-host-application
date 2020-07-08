@@ -2,7 +2,7 @@ from flask import Blueprint, make_response, request, abort, jsonify
 from flask_restplus import Api, Resource
 from flask_jwt_extended import create_access_token
 from flask_sqlalchemy import SQLAlchemy
-from . import extensions
+from .extensions import db
 import logging
 
 auth_blueprint = Blueprint('auth', __name__)
@@ -16,7 +16,7 @@ class Token(Resource):
     def get(self):
         if not request.authorization:
             return make_response('couldnt authenticate', 401, {'WWW-Authenticate' : 'Basic realm="Login Required"'})
-        conn = extensions.db.engine.connect()
+        conn = db.engine.connect()
         row = conn.execute("EXECUTE VerifyAppUser '{m}', '{p}'".format(m = request.authorization.username, p = request.authorization.password)).fetchone()
         if row['Column'] == 0:
             abort(401)

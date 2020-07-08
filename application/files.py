@@ -1,7 +1,8 @@
 from flask import Blueprint, send_from_directory, current_app as app, abort, jsonify, request, make_response
 from flask_restplus import Api, Resource
 from flask_jwt_extended import (jwt_required, get_jwt_identity)
-import os, logging
+import os
+import logging
 
 files_blueprint = Blueprint('files', __name__)
 files_api = Api(files_blueprint)

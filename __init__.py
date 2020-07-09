@@ -1,32 +1,33 @@
-from flask import Flask, current_app, jsonify, json
+from flask import Flask, current_app, make_response, abort
 from flask_restplus import Api
-from .routes import auth, files
-from .lib import extensions
-from .config import Development, Config
 import logging.config
 from werkzeug.exceptions import HTTPException
+from os import environ
+
+from file_host_application.routes import auth, files
+from file_host_application.lib import db, jwt
+from file_host_application.config import Development, Config, Production
 
 api = Api(doc='/docs', version='1.0', title='File Host API Docs')
 
 def handle_exception(e):
-    response = e.get_response()
-    response.data = json.dumps({
-        "code": e.code,
-        "name": e.name,
-        "message": e.description,
-    })
-    response.content_type = "application/json"
-    current_app.logger(e.description)
-    return response, e.code
+    current_app.logger.error(e.description)
+    return make_response({'message':e.description}, e.code)
+
 
 def create_app():
     app = Flask(__name__)
-    app.config.from_object(Development)
-    logging.config.dictConfig(Config.LOGGING_CONFIG)
+
+    if environ['FLASK_ENV'] == 'production':
+        app.config.from_object(Production)
+    else:
+        app.config.from_object(Development)
+    
+    logging.config.dictConfig(app.config['LOGGING_CONFIG'])
 
     api.init_app(app)
-    extensions.db.init_app(app)
-    extensions.jwt.init_app(app)
+    db.init_app(app)
+    jwt.init_app(app)
 
     app.register_error_handler(HTTPException, handle_exception)
     app.register_blueprint(auth.auth_blueprint)

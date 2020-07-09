@@ -1,14 +1,14 @@
-from flask import Blueprint, make_response, request, abort, jsonify
+from flask import Blueprint, make_response, request, abort
 from flask_restplus import Api, Resource
 from flask_jwt_extended import create_access_token
-from flask_sqlalchemy import SQLAlchemy
-from file_host_application.lib.extensions import db
-import logging
+
+from file_host_application.lib import db
+
 
 auth_blueprint = Blueprint('auth', __name__)
 auth_api = Api(auth_blueprint)
 auth_namespace = auth_api.namespace('auth')
-auth_logger = logging.getLogger()
+
 
 @auth_namespace.route('/tokens')
 class Token(Resource):

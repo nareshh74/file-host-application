@@ -3,7 +3,7 @@ from datetime import date
 
 class Config(object):
     SECRET_KEY = environ['APPLICATION_SECRET_KEY']
-    DOWNLOAD_FOLDER = '/host_files/01/'
+    FILES_FOLDER = environ['APPLICATION_FILES_FOLDER']
     LOGGING_CONFIG = {
         'version': 1,
         'formatters': {'default': {
@@ -13,12 +13,12 @@ class Config(object):
             'level': 'DEBUG',
             'formatter': 'default',
             'class': 'logging.handlers.RotatingFileHandler',
-            'filename': 'C:\\Users\\nareshv\\Downloads\\Naresh\\01 - Programming\\projects\\file_host_application\\logs\\' + 'application - ' + str(date.today()) + '.log',
+            'filename': environ['APPLICATION_LOG_FOLDER'] + 'application - ' + str(date.today()) + '.log',
             'maxBytes': 10000,
             'backupCount': 10
         }},
         'root': {
-            'level': 'DEBUG',
+            'level': environ['APPLICATION_DEBUG_LEVEL'],
             'handlers': ['default']
         }
     }

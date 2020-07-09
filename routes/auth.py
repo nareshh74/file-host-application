@@ -2,7 +2,7 @@ from flask import Blueprint, make_response, request, abort, jsonify
 from flask_restplus import Api, Resource
 from flask_jwt_extended import create_access_token
 from flask_sqlalchemy import SQLAlchemy
-from .extensions import db
+from file_host_application.lib.extensions import db
 import logging
 
 auth_blueprint = Blueprint('auth', __name__)
@@ -28,7 +28,3 @@ class Token(Resource):
 @auth_blueprint.route('/test', methods=['GET'])
 def test():
     return {"message":"API is UP!!"}, 200
-
-@auth_blueprint.route('/<path:wrong_path>', methods=['GET', 'POST'])
-def throw(wrong_path):
-    abort(404, request.method + ' to the route ' + str(wrong_path) + ' is not valid')

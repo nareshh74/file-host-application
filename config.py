@@ -3,7 +3,7 @@ from datetime import date
 
 class Config(object):
     SECRET_KEY = environ['APPLICATION_SECRET_KEY']
-    DOWNLOAD_FOLDER = '/application/host_files/01/'
+    DOWNLOAD_FOLDER = '/host_files/01/'
     LOGGING_CONFIG = {
         'version': 1,
         'formatters': {'default': {

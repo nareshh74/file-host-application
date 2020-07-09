@@ -2,7 +2,7 @@ from flask import Blueprint, send_from_directory, current_app as app, abort, req
 from flask_restplus import Api, Resource
 import os
 
-from file_host_application.lib import authenticate_token
+from file_host_application.lib import authenticate_token, validate_requestjson
 
 
 files_blueprint = Blueprint('files', __name__)
@@ -11,9 +11,9 @@ files_namespace = files_api.namespace('files')
 
 
 @files_namespace.route('/')
-@files_namespace.param('version', 'version of the ML model in device')
 class Files(Resource):
     @authenticate_token
+    @validate_requestjson(['version', 'device'])
     def get(self):
         try:
             latest_file_name = None

@@ -1,6 +1,0 @@
-[2020-07-08 20:31:59,149] {C:\Users\nareshv\AppData\Local\Programs\Python\Python38\lib\site-packages\werkzeug\_internal.py:_log:122} WARNING -  * Debugger is active!
-[2020-07-08 20:31:59,157] {C:\Users\nareshv\AppData\Local\Programs\Python\Python38\lib\site-packages\werkzeug\_internal.py:_log:122} INFO -  * Debugger PIN: 835-763-515
-[2020-07-08 20:31:59,160] {C:\Users\nareshv\AppData\Local\Programs\Python\Python38\lib\site-packages\werkzeug\_internal.py:_log:122} INFO -  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
-[2020-07-08 23:18:35,448] {C:\Users\nareshv\Downloads\Naresh\01 - Programming\projects\file_host_application\__init__.py:handle:10} ERROR - 404 Not Found: GET to the route files/v1.0.0 is not valid
-[2020-07-08 23:18:35,517] {C:\Users\nareshv\Downloads\Naresh\01 - Programming\projects\file_host_application\__init__.py:handle:10} ERROR - 404 Not Found: GET to the route favicon.ico is not valid
-[2020-07-08 23:20:22,220] {C:\Users\nareshv\Downloads\Naresh\01 - Programming\projects\file_host_application\__init__.py:handle:10} ERROR - 404 Not Found: GET to the route files/v1.0.0 is not valid

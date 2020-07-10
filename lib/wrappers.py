@@ -24,3 +24,14 @@ def validate_requestjson(request_parameters):
             return func(*args, **kwargs)
         return wrapper2
     return wrapper1
+
+def handle_exception(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        try:
+            return func(*args, **kwargs)
+        except Exception as e:
+            message = getattr(e, 'message', repr(e))
+            code = getattr(e, 'code', 500)
+            abort(code, message)
+    return wrapper

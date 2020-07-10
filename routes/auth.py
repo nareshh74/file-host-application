@@ -11,6 +11,7 @@ auth_namespace = auth_api.namespace('auth')
 
 
 @auth_namespace.route('/tokens')
+@auth_namespace.hide
 class Token(Resource):
     @auth_namespace.doc('Generate token')
     def get(self):

@@ -36,6 +36,7 @@ class Files(Resource):
         return response
 
 
-@files_blueprint.route('/test', methods=['GET'])
+@files_namespace.route('/test', methods=['GET'])
+@files_namespace.hide
 def test():
     return {"message":"API is UP!!"}, 200

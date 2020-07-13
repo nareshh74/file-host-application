@@ -13,7 +13,7 @@ class Config(object):
             'level': 'DEBUG',
             'formatter': 'default',
             'class': 'logging.handlers.RotatingFileHandler',
-            'filename': environ['APPLICATION_LOG_FOLDER'] + 'application - ' + str(date.today()) + '.log',
+            'filename': environ['APPLICATION_LOG_FOLDER'] + '\\application - ' + str(date.today()) + '.log',
             'maxBytes': 10000,
             'backupCount': 10
         }},

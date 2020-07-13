@@ -3,10 +3,17 @@ from flask_restplus import Api
 import logging.config
 from werkzeug.exceptions import HTTPException
 from os import environ
+import atexit
 
 from file_host_application.routes import auth, files
 from file_host_application.lib import db, jwt
 from file_host_application.config import Development, Config, Production
+
+
+def close_logfilehandlers():
+    for handler in reversed(logging.getLogger().handlers):
+        handler.close()
+
 
 api = Api(doc='/docs', version='1.0', title='File Host API Docs')
 
@@ -28,6 +35,7 @@ def create_app():
     api.init_app(app)
     db.init_app(app)
     jwt.init_app(app)
+    atexit.register(close_logfilehandlers)
 
     app.register_error_handler(HTTPException, handle_exception)
     app.register_blueprint(auth.auth_blueprint)

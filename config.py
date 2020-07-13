@@ -12,8 +12,10 @@ class Config(object):
         'handlers': {'default': {
             'level': 'DEBUG',
             'formatter': 'default',
-            'class': 'logging.handlers.RotatingFileHandler',
-            'filename': environ['APPLICATION_LOG_FOLDER'] + 'application - ' + str(date.today()) + '.log',
+            'class': 'logging.handlers.TimedRotatingFileHandler',
+            'filename': environ['APPLICATION_LOG_FOLDER'] + '\\application - ' + str(date.today()) + '.log',
+            'when':'D',
+            'interval':1,
             'maxBytes': 10000,
             'backupCount': 10
         }},

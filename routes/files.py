@@ -1,4 +1,4 @@
-from flask import Blueprint, send_from_directory, current_app as app, abort, request, make_response, redirect, url_for, g
+from flask import Blueprint, send_from_directory, current_app as app, abort, request, make_response, redirect, url_for
 from flask_restplus import Api, Resource
 import os
 
@@ -7,7 +7,7 @@ from file_host_application.lib import handle_exception, authenticate_token, auth
 
 files_blueprint = Blueprint('files', __name__)
 files_api = Api(files_blueprint)
-files_namespace = files_api.namespace(name='files', description='API to handle file requests', validate=False, decorators=[authenticate_token, handle_exception], authorizations=authorizations)
+files_namespace = files_api.namespace(name='files', description='API to handle file requests', decorators=[authenticate_token, handle_exception], authorizations=authorizations)
 
 
 @files_namespace.route('/<string:file_version>', endpoint='version_check')
@@ -18,32 +18,38 @@ class FileVersion(Resource):
     @files_namespace.doc(responses={'500':'{"message":"Internal server Error message description"}'})
     @files_namespace.doc(responses={'400':'{"message":"Bad Request Error message description"}'})
     @files_namespace.doc(responses={'403':'{"message":"Not Authorized Error message description"}'})
-    @files_namespace.response(303, 'Redirect to route files/ to download the latest file', headers={'Content-Disposition':'attachment', 'Content-Type':'application/octet-stream'}, schema={'type':'file'})
-    @files_namespace.produces(['application/octet-stream'])
+    @files_namespace.doc(responses={'303':'Redirect to the route /files. Please refer /files route response documentation'})
     def get(self, file_version):
         latest_file_name = None
-        print(app.root_path + '\\' + app.config['FILES_FOLDER'])
         for root, dirs, files in os.walk(app.root_path + '\\' + app.config['FILES_FOLDER']):
             for file in files:
                 if file.endswith(".onnx"):
                     latest_file_name = file
                     break
-        print(latest_file_name)
         if(file_version == os.path.splitext(latest_file_name)[0]):
             return {'message':'up to date'}, 200
         
-        if getattr(g, 'latest_file_name', None) is None:
-            g.latest_file_name = latest_file_name
-        redirect_url = url_for('files.file_download')
-        response = make_response(redirect(redirect_url), 303, {'Content-Type':'application/octet-stream'})
+        redirect_url = url_for('files.file_download', latest_file_name=latest_file_name)
+        response = make_response(redirect(redirect_url), 303)
         return response
 
 @files_namespace.route('/', endpoint='file_download')
 class FileName(Resource):
-    @files_namespace.produces(['application/octet-stream'])
+    @files_namespace.doc(security='apiKey')
+    @files_namespace.doc(params={'latest_file_name':{'description':'Latest file in the server','in':'query'}})
+    @files_namespace.response(200, 'Redirect to route /files/ to download the latest file. Please refer /files route response documentation', headers={'Content_disposition':'attachment', 'Content-Type':'application/octet-stream'})
+    @files_namespace.doc(responses={'500':'{"message":"Internal server Error message description"}'})
+    @files_namespace.doc(responses={'400':'{"message":"Bad Request Error message description"}'})
+    @files_namespace.doc(responses={'403':'{"message":"Not Authorized Error message description"}'})
     def get(self):
-        response = send_from_directory(app.root_path + '\\' + app.config['FILES_FOLDER'], g.get('latest_file_name'), as_attachment=True, conditional=True)
-        print(response.headers)
+        latest_file_name = request.args.get('latest_file_name', None)
+        if latest_file_name is None:
+            for root, dirs, files in os.walk(app.root_path + '\\' + app.config['FILES_FOLDER']):
+                for file in files:
+                    if file.endswith(".onnx"):
+                        latest_file_name = file
+                        break
+        response = send_from_directory(app.root_path + '\\' + app.config['FILES_FOLDER'], latest_file_name, as_attachment=True, conditional=True)
         return response
 
 @files_namespace.route('/test', methods=['GET'])

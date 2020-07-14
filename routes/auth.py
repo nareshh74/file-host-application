@@ -2,7 +2,7 @@ from flask import Blueprint, make_response, request, abort
 from flask_restplus import Api, Resource
 from flask_jwt_extended import create_access_token
 
-from .lib import db
+from ..lib import db
 
 
 auth_blueprint = Blueprint('auth', __name__)

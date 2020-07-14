@@ -5,9 +5,9 @@ from werkzeug.exceptions import HTTPException
 from os import environ
 import atexit
 
-from routes import auth, files
-from lib import db, jwt
-from config import Development, Config, Production
+from .routes import auth_blueprint, auth_namespace, files_blueprint, files_namespace
+from .lib import db, jwt
+from .config import Development, Config, Production
 
 
 def close_logfilehandlers():
@@ -38,10 +38,10 @@ def create_app():
     atexit.register(close_logfilehandlers)
 
     app.register_error_handler(HTTPException, handle_exception)
-    app.register_blueprint(auth.auth_blueprint)
-    app.register_blueprint(files.files_blueprint)
+    app.register_blueprint(auth_blueprint)
+    app.register_blueprint(files_blueprint)
 
-    api.add_namespace(auth.auth_namespace)
-    api.add_namespace(files.files_namespace)
+    api.add_namespace(auth_namespace)
+    api.add_namespace(files_namespace)
 
     return app

@@ -1,3 +1,3 @@
-from .lib.wrappers import authenticate_token, handle_exception
-from .lib.extensions import db, jwt
-from .lib.global_variables import authorizations
+from .wrappers import authenticate_token, handle_exception
+from .extensions import db, jwt
+from .global_variables import authorizations

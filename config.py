@@ -24,10 +24,7 @@ class Config(object):
     }
 
 class Production(Config):
-    SQLALCHEMY_DATABASE_URI = "mssql+pyodbc://application1:application1@PRINHYLTPDL1561/HumanResource?driver=SQL+Server"
-    SQLALCHEMY_TRACK_MODIFICATIONS = False
+    pass
 
 class Development(Config):
-    DEBUG = True
-    SQLALCHEMY_DATABASE_URI = "mssql+pyodbc://application1:application1@PRINHYLTPDL1561/HumanResource?driver=SQL+Server"
-    SQLALCHEMY_TRACK_MODIFICATIONS = False
+    pass

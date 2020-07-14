@@ -5,8 +5,7 @@ from werkzeug.exceptions import HTTPException
 from os import environ
 import atexit
 
-from file_host_application.routes import auth_blueprint, auth_namespace, files_blueprint, files_namespace
-from file_host_application.lib import db, jwt
+from file_host_application.routes import files_blueprint, files_namespace
 from file_host_application.config import Development, Config, Production
 
 
@@ -33,15 +32,11 @@ def create_app():
     logging.config.dictConfig(app.config['LOGGING_CONFIG'])
 
     api.init_app(app)
-    db.init_app(app)
-    jwt.init_app(app)
     atexit.register(close_logfilehandlers)
 
     app.register_error_handler(HTTPException, handle_exception)
-    app.register_blueprint(auth_blueprint)
     app.register_blueprint(files_blueprint)
 
-    api.add_namespace(auth_namespace)
     api.add_namespace(files_namespace)
 
     return app

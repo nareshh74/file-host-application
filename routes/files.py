@@ -7,11 +7,12 @@ from file_host_application.lib import handle_exception, authenticate_token, auth
 
 files_blueprint = Blueprint('files', __name__)
 files_api = Api(files_blueprint)
-files_namespace = files_api.namespace(name='files', description='API to handle file requests', decorators=[authenticate_token, handle_exception], authorizations=authorizations)
+files_namespace = files_api.namespace(name='files', description='API to handle file requests', authorizations=authorizations)
 
 
 @files_namespace.route('/<string:file_version>', endpoint='version_check')
 class FileVersion(Resource):
+    @authenticate_token
     @files_namespace.doc(security='apiKey')
     @files_namespace.doc(params={'file_version':{'description':'Version of the file in the requesting device','in':'path'}})
     @files_namespace.doc(responses={'200':'{"message":"Success message description"}'})
@@ -19,6 +20,7 @@ class FileVersion(Resource):
     @files_namespace.doc(responses={'400':'{"message":"Bad Request Error message description"}'})
     @files_namespace.doc(responses={'403':'{"message":"Not Authorized Error message description"}'})
     @files_namespace.doc(responses={'303':'Redirect to the route /files. Please refer /files route response documentation'})
+    @handle_exception
     def get(self, file_version):
         latest_file_name = None
         for root, dirs, files in os.walk(app.root_path + '\\' + app.config['FILES_FOLDER']):
@@ -35,12 +37,14 @@ class FileVersion(Resource):
 
 @files_namespace.route('/', endpoint='file_download')
 class FileName(Resource):
+    @authenticate_token
     @files_namespace.doc(security='apiKey')
     @files_namespace.doc(params={'latest_file_name':{'description':'Latest file in the server','in':'query'}})
     @files_namespace.response(200, 'Redirect to route /files/ to download the latest file. Please refer /files route response documentation', headers={'Content_disposition':'attachment', 'Content-Type':'application/octet-stream'})
     @files_namespace.doc(responses={'500':'{"message":"Internal server Error message description"}'})
     @files_namespace.doc(responses={'400':'{"message":"Bad Request Error message description"}'})
     @files_namespace.doc(responses={'403':'{"message":"Not Authorized Error message description"}'})
+    @handle_exception
     def get(self):
         latest_file_name = request.args.get('latest_file_name', None)
         if latest_file_name is None:

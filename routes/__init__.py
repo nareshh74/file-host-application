@@ -1,2 +1,2 @@
-from .auth import auth_blueprint, auth_namespace
-from .files import files_blueprint, files_namespace
+from file_host_application.routes.auth import auth_blueprint, auth_namespace
+from file_host_application.routes.files import files_blueprint, files_namespace

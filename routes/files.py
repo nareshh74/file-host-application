@@ -2,7 +2,7 @@ from flask import Blueprint, send_from_directory, current_app as app, abort, req
 from flask_restplus import Api, Resource
 import os
 
-from ..lib import handle_exception, authenticate_token, authorizations
+from file_host_application.lib import handle_exception, authenticate_token, authorizations
 
 
 files_blueprint = Blueprint('files', __name__)

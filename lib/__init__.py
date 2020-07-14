@@ -1,3 +1,3 @@
-from file_host_application.lib.wrappers import authenticate_token, handle_exception
-from file_host_application.lib.extensions import db, jwt
-from file_host_application.lib.global_variables import authorizations
+from .lib.wrappers import authenticate_token, handle_exception
+from .lib.extensions import db, jwt
+from .lib.global_variables import authorizations

@@ -5,9 +5,9 @@ from werkzeug.exceptions import HTTPException
 from os import environ
 import atexit
 
-from .routes import auth, files
-from .lib import db, jwt
-from .config import Development, Config, Production
+from routes import auth, files
+from lib import db, jwt
+from config import Development, Config, Production
 
 
 def close_logfilehandlers():

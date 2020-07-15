@@ -4,6 +4,7 @@ from datetime import date
 class Config(object):
     SECRET_KEY = environ['APPLICATION_SECRET_KEY']
     FILES_FOLDER = environ['APPLICATION_FILES_FOLDER']
+    SERVER_NAME = '0.0.0.0:5000'
     LOGGING_CONFIG = {
         'version': 1,
         'formatters': {'default': {

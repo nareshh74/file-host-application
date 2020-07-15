@@ -40,7 +40,7 @@ class FileName(Resource):
     @authenticate_token
     @files_namespace.doc(security='apiKey')
     @files_namespace.doc(params={'latest_file_name':{'description':'Latest file in the server','in':'query'}})
-    @files_namespace.response(200, 'Redirect to route /files/ to download the latest file. Please refer /files route response documentation', headers={'Content_disposition':'attachment', 'Content-Type':'application/octet-stream'})
+    @files_namespace.response(200, 'latest file as attachment', headers={'Content_disposition':'attachment', 'Content-Type':'application/octet-stream'})
     @files_namespace.doc(responses={'500':'{"message":"Internal server Error message description"}'})
     @files_namespace.doc(responses={'400':'{"message":"Bad Request Error message description"}'})
     @files_namespace.doc(responses={'403':'{"message":"Not Authorized Error message description"}'})
@@ -48,12 +48,12 @@ class FileName(Resource):
     def get(self):
         latest_file_name = request.args.get('latest_file_name', None)
         if latest_file_name is None:
-            for root, dirs, files in os.walk(app.root_path + '\\' + app.config['FILES_FOLDER']):
+            for root, dirs, files in os.walk(app.root_path + '/' + app.config['FILES_FOLDER']):
                 for file in files:
                     if file.endswith(".onnx"):
                         latest_file_name = file
                         break
-        response = send_from_directory(app.root_path + '\\' + app.config['FILES_FOLDER'], latest_file_name, as_attachment=True, conditional=True)
+        response = send_from_directory(app.root_path + '/' + app.config['FILES_FOLDER'], latest_file_name, as_attachment=True, conditional=True)
         return response
 
 @files_namespace.route('/test', methods=['GET'])

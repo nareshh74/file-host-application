@@ -53,7 +53,7 @@ class FileName(Resource):
                     if file.endswith(".onnx"):
                         latest_file_name = file
                         break
-        response = send_from_directory(app.root_path + '/' + app.config['FILES_FOLDER'], latest_file_name, as_attachment=True, conditional=True)
+        response = send_from_directory(app.config['FILES_FOLDER'], latest_file_name, as_attachment=True, conditional=True)
         return response
 
 @files_namespace.route('/test', methods=['GET'])

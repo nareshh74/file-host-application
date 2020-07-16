@@ -1,6 +1,0 @@
-.vscode/
-__pycache__/
-application/__pycache__/
-venv/
-logs/
-*.log

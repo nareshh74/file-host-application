@@ -42,4 +42,6 @@ def create_app():
 
     api.add_namespace(files_namespace)
 
+    CORS(app)
+
     return app

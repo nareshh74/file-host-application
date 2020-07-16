@@ -6,6 +6,7 @@ from os import environ
 import atexit
 from werkzeug.contrib.fixers import ProxyFix
 
+
 from file_host_application.routes import files_blueprint, files_namespace
 from file_host_application.config import Development, Config, Production
 

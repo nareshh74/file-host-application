@@ -1,7 +1,6 @@
 from flask import Blueprint, send_from_directory, current_app as app, abort, request, make_response, redirect, url_for
 from flask_restplus import Api, Resource
 import os
-import logging
 
 from file_host_application.lib import handle_exception, authenticate_token, authorizations
 
@@ -48,17 +47,13 @@ class FileName(Resource):
     @handle_exception
     def get(self):
         latest_file_name = request.args.get('latest_file_name', None)
-        # return ''
         if latest_file_name is None:
-            for root, dirs, files in os.walk(app.config['FILES_FOLDER']):
+            for root, dirs, files in os.walk(app.root_path + '/' + app.config['FILES_FOLDER']):
                 for file in files:
                     if file.endswith(".onnx"):
                         latest_file_name = file
                         break
-        # logging.exception('latest_file_name - ' + latest_file_name)
-        # logging.exception('folder - ' + app.config['FILES_FOLDER'])
         response = send_from_directory(app.root_path + '/' + app.config['FILES_FOLDER'], latest_file_name, as_attachment=True, conditional=True)
-        return ''
         return response
 
 @files_namespace.route('/test', methods=['GET'])

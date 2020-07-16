@@ -4,6 +4,7 @@ import logging.config
 from werkzeug.exceptions import HTTPException
 from os import environ
 import atexit
+from werkzeug.contrib.fixers import ProxyFix
 
 from file_host_application.routes import files_blueprint, files_namespace
 from file_host_application.config import Development, Config, Production
@@ -23,6 +24,8 @@ def handle_exception(e):
 
 def create_app():
     app = Flask(__name__)
+    
+    app.wsgi_app = ProxyFix(app.wsgi_app)
 
     if environ['FLASK_ENV'] == 'production':
         app.config.from_object(Production)

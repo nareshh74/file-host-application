@@ -2,4 +2,4 @@
 __pycache__/
 .deployment
 venv/
-logs/
+*.log

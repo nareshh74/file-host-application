@@ -23,7 +23,7 @@ class FileVersion(Resource):
     @handle_exception
     def get(self, file_version):
         latest_file_name = None
-        for root, dirs, files in os.walk(app.root_path + '\\' + app.config['FILES_FOLDER']):
+        for root, dirs, files in os.walk(app.config['FILES_FOLDER']):
             for file in files:
                 if file.endswith(".onnx"):
                     latest_file_name = file
@@ -48,7 +48,7 @@ class FileName(Resource):
     def get(self):
         latest_file_name = request.args.get('latest_file_name', None)
         if latest_file_name is None:
-            for root, dirs, files in os.walk(app.root_path + '/' + app.config['FILES_FOLDER']):
+            for root, dirs, files in os.walk(app.config['FILES_FOLDER']):
                 for file in files:
                     if file.endswith(".onnx"):
                         latest_file_name = file

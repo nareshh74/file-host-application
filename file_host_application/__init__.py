@@ -5,6 +5,7 @@ from werkzeug.exceptions import HTTPException
 from os import environ
 import atexit
 from werkzeug.contrib.fixers import ProxyFix
+from flask_cors import CORS
 
 
 from file_host_application.routes import files_blueprint, files_namespace

@@ -1,3 +1,4 @@
+# application level configurations
 from os import environ
 from datetime import date
 

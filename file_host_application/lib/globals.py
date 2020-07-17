@@ -1,3 +1,4 @@
+# module for global variables and functions
 authorizations = {
     'apiKey': {
         'type': 'apiKey',

@@ -1,4 +1,11 @@
 # module for global variables and functions
+
+# python package imports
+import logging
+
+# internal imports
+from flask import make_response, current_app as app
+
 authorizations = {
     'apiKey': {
         'type': 'apiKey',
@@ -12,5 +19,5 @@ def close_logfilehandlers():
         handler.close()
 
 def handle_exception(e):
-    current_app.logger.error(e.description)
+    app.logger.error(e.description)
     return make_response({'message':e.description}, e.code)

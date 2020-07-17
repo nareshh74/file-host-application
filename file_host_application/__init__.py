@@ -5,11 +5,12 @@ from werkzeug.exceptions import HTTPException
 from os import environ
 import atexit
 from werkzeug.contrib.fixers import ProxyFix
+from flask_cors import CORS
 
 # internal imports
 from file_host_application.routes import files_blueprint, files_namespace
 from file_host_application.config import Development, Config, Production
-from file_host_application.lib import api, close_logfilehandlers, handle_exception
+from file_host_application.lib import api, close_logfilehandlers, log_exception
 
 
 # app factory
@@ -39,7 +40,7 @@ def create_app():
 
     # app level error handler, all caught exceptions are bubbled up and caughts by this logger
     # single logger is used, so all exceptions are logged to a single file
-    app.register_error_handler(HTTPException, handle_exception)
+    app.register_error_handler(HTTPException, log_exception)
     
     # categorizing endpoints in swagger UI
     api.add_namespace(files_namespace)

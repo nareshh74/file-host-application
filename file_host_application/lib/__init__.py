@@ -1,2 +1,3 @@
 from .wrappers import authenticate_token, handle_exception
-from .global_variables import authorizations
+from .globals import authorizations, handle_exception, close_logfilehandlers
+from .extensions import api

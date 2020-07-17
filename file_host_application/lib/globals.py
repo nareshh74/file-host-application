@@ -1,7 +1,7 @@
 # module for global variables and functions
 
 # 3rd party imports
-from flask import make_response, current_app as app
+from flask import make_response
 from werkzeug.exceptions import HTTPException
 import logging
 

@@ -1,6 +1,5 @@
 # 3rd party imports
 from flask import Flask, current_app, make_response, abort
-from flask_restplus import Api
 import logging.config
 from werkzeug.exceptions import HTTPException
 from os import environ

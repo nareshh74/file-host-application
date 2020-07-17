@@ -1,10 +1,9 @@
 # module for global variables and functions
 
-# python package imports
-import logging
-
-# internal imports
+# 3rd party imports
 from flask import make_response, current_app as app
+from werkzeug.exceptions import HTTPException
+import logging
 
 authorizations = {
     'apiKey': {
@@ -18,6 +17,6 @@ def close_logfilehandlers():
     for handler in reversed(logging.getLogger().handlers):
         handler.close()
 
-def handle_exception(e):
-    app.logger.error(e.description)
-    return make_response({'message':e.description}, e.code)
+def log_exception(e):
+    logging.exception(e.get('description', None))
+    return make_response({'message':e.get('description', None)}, e.get('code', 500))

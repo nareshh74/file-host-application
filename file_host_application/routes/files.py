@@ -5,7 +5,7 @@ from flask_restplus import Api, Resource
 import os
 
 # internal imports
-from file_host_application.lib import handle_exception, authenticate_token, authorizations
+from file_host_application.core import handle_exception, authenticate_token, authorizations
 
 
 # bluprint level variables

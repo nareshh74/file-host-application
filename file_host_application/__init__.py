@@ -11,8 +11,8 @@ from flask_cors import CORS
 
 # application imports
 from file_host_application.routes import files_blueprint, files_namespace
-from file_host_application.lib.config import Development, Config, Production
-from file_host_application.lib import api, close_logfilehandlers, log_exception
+from file_host_application.core.config import Development, Config, Production
+from file_host_application.core import api, close_logfilehandlers, log_exception
 
 
 # app factory

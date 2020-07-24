@@ -1,13 +1,15 @@
-# 3rd party imports
-from flask import Flask, current_app, make_response, abort
+# standard imports
 import logging.config
-from werkzeug.exceptions import HTTPException
 from os import environ
 import atexit
+
+# 3rd party imports
+from flask import Flask, current_app, make_response, abort
+from werkzeug.exceptions import HTTPException
 from werkzeug.contrib.fixers import ProxyFix
 from flask_cors import CORS
 
-# internal imports
+# application imports
 from file_host_application.routes import files_blueprint, files_namespace
 from file_host_application.config import Development, Config, Production
 from file_host_application.lib import api, close_logfilehandlers, log_exception

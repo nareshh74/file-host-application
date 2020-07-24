@@ -53,3 +53,6 @@ def create_app():
 
     # factory shud always return a flask instance
     return app
+
+
+app = create_app()
